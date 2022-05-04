@@ -38,6 +38,11 @@ namespace AuctionDotNet
             services.AddTransient<AuctionService>();
             services.AddTransient<AppUserService>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("MyCorsImplementationPolicy", builder => builder.WithOrigins("*"));
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -60,7 +65,7 @@ namespace AuctionDotNet
             }
 
             //app.UseHttpsRedirection();
-
+            app.UseCors("MyCorsImplementationPolicy");
             app.UseRouting();
 
             app.UseAuthorization();

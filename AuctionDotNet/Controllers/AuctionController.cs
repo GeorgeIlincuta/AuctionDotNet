@@ -1,5 +1,6 @@
 ﻿using AuctionDotNet.Data.Model.ViewModel;
 using AuctionDotNet.Data.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace AuctionDotNet.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("MyCorsImplementationPolicy")]
     public class AuctionController : ControllerBase
     {
         private readonly AuctionService _auctionsService;
