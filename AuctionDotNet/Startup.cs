@@ -38,10 +38,7 @@ namespace AuctionDotNet
             services.AddTransient<AuctionService>();
             services.AddTransient<AppUserService>();
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("MyCorsImplementationPolicy", builder => builder.WithOrigins("*"));
-            //});
+            services.AddCors();
 
             services.AddSwaggerGen(c =>
             {
@@ -64,9 +61,11 @@ namespace AuctionDotNet
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "my_book v1"));
             }
 
-            //app.UseHttpsRedirection();
-            //app.UseCors("MyCorsImplementationPolicy");
+            app.UseHttpsRedirection();
+
             app.UseRouting();
+
+            app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
 
             app.UseAuthorization();
 

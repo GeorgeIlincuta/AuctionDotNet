@@ -8,7 +8,6 @@ namespace AuctionDotNet.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[EnableCors("MyCorsImplementationPolicy")]
     public class AuctionController : ControllerBase
     {
         private readonly AuctionService _auctionsService;
