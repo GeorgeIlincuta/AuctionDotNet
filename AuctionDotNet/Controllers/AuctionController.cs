@@ -45,7 +45,7 @@ namespace AuctionDotNet.Controllers
             return Ok(updateAuction);
         }
 
-        [HttpDelete("delete-book-by-id/{id}")]
+        [HttpDelete("delete-auction-by-id/{id}")]
         public IActionResult DeleteAuctionById(int id)
         {
             _auctionsService.DeleteAuctionById(id);
