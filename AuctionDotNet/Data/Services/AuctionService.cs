@@ -32,9 +32,9 @@ namespace AuctionDotNet.Data.Services
             {
                 Name = auction.Name,
                 Description = auction.Description,
-                PriceStart = auction.PriceStart,
-                MaxPeriod = auction.MaxPeriod,
-                MinPrice = auction.MinPrice,
+                BidStart = auction.BidStart,
+                TimeLeft = auction.TimeLeft,
+                BuyPrice = auction.BuyPrice,
                 Active = auction.Active,
                 AppUserId = auction.AppUserId
             };
@@ -49,9 +49,9 @@ namespace AuctionDotNet.Data.Services
             {
                 _auction.Name = auction.Name;
                 _auction.Description = auction.Description;
-                _auction.PriceStart = auction.PriceStart;
-                _auction.MaxPeriod = auction.MaxPeriod;
-                _auction.MinPrice = auction.MinPrice;
+                _auction.BidStart = auction.BidStart;
+                _auction.TimeLeft = auction.TimeLeft;
+                _auction.BuyPrice = auction.BuyPrice;
                 _auction.Active = auction.Active;
                 _auction.AppUserId = auction.AppUserId;
 

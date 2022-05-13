@@ -1,13 +1,22 @@
 ﻿using AuctionDotNet.Data.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuctionDotNet.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<AppUser> Users { get; set; }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Auction>()
+                .HasOne<AppUser>(u => u.AppUser)
+                .WithMany(a => a.Auctions)
+                .HasForeignKey(a => a.AppUserId);
+
+            base.OnModelCreating(builder);
+        }
         public DbSet<Auction> Auctions { get; set; }
     }
 }

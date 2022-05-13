@@ -1,15 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace AuctionDotNet.Data.Model
 {
-    public class AppUser
+    public class AppUser : IdentityUser<int>
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Address { get; set; }
-        public string Password { get; set; }
-
         public List<Auction> Auctions { get; set; }
     }
 }
