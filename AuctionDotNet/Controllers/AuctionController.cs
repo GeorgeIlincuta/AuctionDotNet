@@ -1,8 +1,10 @@
 ﻿using AuctionDotNet.Data.Model.ViewModel;
 using AuctionDotNet.Data.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace AuctionDotNet.Controllers
 {
@@ -18,37 +20,37 @@ namespace AuctionDotNet.Controllers
         }
 
         [HttpGet("get-all-auctions")]
-        public IActionResult GetAllAuctions()
+        public async Task<IActionResult> GetAllAuctions()
         {
-            var allAuctions = _auctionsService.GetAllAuctions();
+            var allAuctions = await _auctionsService.GetAllAuctionsAsync();
             return Ok(allAuctions);
         }
 
         [HttpGet("get-auction-by-id/{id}")]
-        public IActionResult GetAuctionById(int id)
+        public async Task<IActionResult> GetAuctionById(int id)
         {
-            var auction = _auctionsService.GetAuctionById(id);
+            var auction = await _auctionsService.GetAuctionByIdAsync(id);
             return Ok(auction);
         }
 
         [HttpPost("add-auction")]
-        public IActionResult AddAuction([FromBody] AuctionVM auction)
+        public async Task<IActionResult> AddAuction([FromBody] AuctionVM auction)
         {
-            _auctionsService.AddAuction(auction);
+            await _auctionsService.AddAuctionAsync(auction);
             return Ok();
         }
 
         [HttpPut("update-auction-by-id/{id}")]
-        public IActionResult UpdateAuction(int id, [FromBody]AuctionVM auction)
+        public async Task<IActionResult> UpdateAuction(int id, [FromBody]AuctionVM auction)
         {
-            var updateAuction = _auctionsService.UpdateAuctionById(id, auction);
+            var updateAuction = await _auctionsService.UpdateAuctionByIdAsync(id, auction);
             return Ok(updateAuction);
         }
 
         [HttpDelete("delete-auction-by-id/{id}")]
-        public IActionResult DeleteAuctionById(int id)
+        public async Task<IActionResult> DeleteAuctionById(int id)
         {
-            _auctionsService.DeleteAuctionById(id);
+            await _auctionsService.DeleteAuctionByIdAsync(id);
             return Ok();
         }
     }

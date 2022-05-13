@@ -1,7 +1,9 @@
 ﻿using AuctionDotNet.Data.Model;
 using AuctionDotNet.Data.Model.ViewModel;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AuctionDotNet.Data.Services
 {
@@ -14,17 +16,17 @@ namespace AuctionDotNet.Data.Services
             _context = context;
         }
 
-        public List<Auction> GetAllAuctions()
+        public async Task<List<Auction>> GetAllAuctionsAsync()
         {
-            return _context.Auctions.ToList();
+            return await _context.Auctions.ToListAsync();
         }
 
-        public Auction GetAuctionById(int id)
+        public async Task<Auction> GetAuctionByIdAsync(int id)
         {
-            return _context.Auctions.FirstOrDefault(a => a.Id == id);
+            return await _context.Auctions.FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public void AddAuction(AuctionVM auction)
+        public async Task AddAuctionAsync(AuctionVM auction)
         {
             var _auction = new Auction()
             {
@@ -36,13 +38,13 @@ namespace AuctionDotNet.Data.Services
                 Active = auction.Active,
                 AppUserId = auction.AppUserId
             };
-            _context.Auctions.Add(_auction);
-            _context.SaveChanges();
+            await _context.Auctions.AddAsync(_auction);
+            await _context.SaveChangesAsync();
         }
 
-        public Auction UpdateAuctionById(int auctionId, AuctionVM auction)
+        public async Task<Auction> UpdateAuctionByIdAsync(int auctionId, AuctionVM auction)
         {
-            var _auction = _context.Auctions.FirstOrDefault(a => a.Id == auctionId);
+            var _auction = await _context.Auctions.FirstOrDefaultAsync(a => a.Id == auctionId);
             if(_auction != null)
             {
                 _auction.Name = auction.Name;
@@ -53,18 +55,18 @@ namespace AuctionDotNet.Data.Services
                 _auction.Active = auction.Active;
                 _auction.AppUserId = auction.AppUserId;
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             return _auction;
         }
 
-        public void DeleteAuctionById(int auctionId)
+        public async Task DeleteAuctionByIdAsync(int auctionId)
         {
-            var _auction = _context.Auctions.FirstOrDefault(a => a.Id == auctionId);
+            var _auction = await _context.Auctions.FirstOrDefaultAsync(a => a.Id == auctionId);
             if (_auction != null)
             {
                 _context.Auctions.Remove(_auction);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }

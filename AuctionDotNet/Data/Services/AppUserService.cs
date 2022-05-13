@@ -1,7 +1,9 @@
 ﻿using AuctionDotNet.Data.Model;
 using AuctionDotNet.Data.Model.ViewModel;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AuctionDotNet.Data.Services
 {
@@ -14,17 +16,17 @@ namespace AuctionDotNet.Data.Services
             _context = context;
         }
 
-        public List<AppUser> GetAllUsers()
+        public async Task<List<AppUser>> GetAllUsersAsync()
         {
-            return _context.Users.ToList();
+            return await _context.Users.ToListAsync();
         }
 
-        public AppUser GetUserById(int id)
+        public async Task<AppUser> GetUserByIdAsync(int id)
         {
-            return _context.Users.FirstOrDefault(a => a.Id == id);
+            return await _context.Users.FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public void AddUser(UserVm user)
+        public async Task AddUserAsync(UserVm user)
         {
             var _user = new AppUser()
             {
@@ -33,13 +35,13 @@ namespace AuctionDotNet.Data.Services
                 Address = user.Address,
                 Password = user.Password
             };
-            _context.Users.Add(_user);
-            _context.SaveChanges();
+            await _context.Users.AddAsync(_user);
+            await _context.SaveChangesAsync();
         }
 
-        public AppUser UpdateUserById(int userId, UserVm user)
+        public async Task<AppUser> UpdateUserByIdAsync(int userId, UserVm user)
         {
-            var _user = _context.Users.FirstOrDefault(a => a.Id == userId);
+            var _user = await _context.Users.FirstOrDefaultAsync(a => a.Id == userId);
             if (_user != null)
             {
                 _user.Name = user.Name;
@@ -47,18 +49,18 @@ namespace AuctionDotNet.Data.Services
                 _user.Address = user.Address;
                 _user.Password = user.Password;
 
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             return _user;
         }
 
-        public void DeleteUserById(int userId)
+        public async Task DeleteUserByIdAsync(int userId)
         {
-            var _user = _context.Users.FirstOrDefault(a => a.Id == userId);
+            var _user = await _context.Users.FirstOrDefaultAsync(a => a.Id == userId);
             if (_user != null)
             {
                 _context.Users.Remove(_user);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }

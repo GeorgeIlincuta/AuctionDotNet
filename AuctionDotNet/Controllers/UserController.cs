@@ -1,6 +1,7 @@
 ﻿using AuctionDotNet.Data.Model.ViewModel;
 using AuctionDotNet.Data.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace AuctionDotNet.Controllers
 {
@@ -14,37 +15,37 @@ namespace AuctionDotNet.Controllers
         }
 
         [HttpGet("get-all-users")]
-        public IActionResult GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
-            var allUsers = _appUserServices.GetAllUsers();
+            var allUsers = await _appUserServices.GetAllUsersAsync();
             return Ok(allUsers);
         }
 
         [HttpGet("get-user-by-id/{id}")]
-        public IActionResult GetUserById(int id)
+        public async Task<IActionResult> GetUserById(int id)
         {
-            var user = _appUserServices.GetUserById(id);
+            var user = await _appUserServices.GetUserByIdAsync(id);
             return Ok(user);
         }
 
         [HttpPost("add-user")]
-        public IActionResult AddUser([FromBody] UserVm user)
+        public async Task<IActionResult> AddUser([FromBody] UserVm user)
         {
-            _appUserServices.AddUser(user);
+            await _appUserServices.AddUserAsync(user);
             return Ok();
         }
 
         [HttpPut("update-user-by-id/{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] UserVm user)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserVm user)
         {
-            var updateUser = _appUserServices.UpdateUserById(id, user);
+            var updateUser = await _appUserServices.UpdateUserByIdAsync(id, user);
             return Ok(updateUser);
         }
 
         [HttpDelete("delete-user-by-id/{id}")]
-        public IActionResult DeleteUserById(int id)
+        public async Task<IActionResult> DeleteUserById(int id)
         {
-            _appUserServices.DeleteUserById(id);
+            await _appUserServices.DeleteUserByIdAsync(id);
             return Ok();
         }
     }
