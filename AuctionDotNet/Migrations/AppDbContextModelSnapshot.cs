@@ -128,31 +128,69 @@ namespace AuctionDotNet.Migrations
                     b.Property<int>("AppUserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BidStart")
+                    b.Property<int>("BidBuyingPrice")
                         .HasColumnType("int");
 
-                    b.Property<int>("BuyPrice")
+                    b.Property<int>("BidDuration")
                         .HasColumnType("int");
+
+                    b.Property<int>("BidStartPrice")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("LastBidId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TimeLeft")
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Auctions");
+                });
+
+            modelBuilder.Entity("AuctionDotNet.Data.Model.AuctionBid", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AuctionId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
-                    b.HasIndex("LastBidId");
+                    b.ToTable("AuctionBids");
+                });
 
-                    b.ToTable("Auctions");
+            modelBuilder.Entity("AuctionDotNet.Data.Model.AuctionBought", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AuctionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("AuctionsBought");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -263,10 +301,20 @@ namespace AuctionDotNet.Migrations
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("AuctionDotNet.Data.Model.AppUser", "LastBid")
-                        .WithMany()
-                        .HasForeignKey("LastBidId");
+            modelBuilder.Entity("AuctionDotNet.Data.Model.AuctionBid", b =>
+                {
+                    b.HasOne("AuctionDotNet.Data.Model.AppUser", null)
+                        .WithMany("AuctionBids")
+                        .HasForeignKey("AppUserId");
+                });
+
+            modelBuilder.Entity("AuctionDotNet.Data.Model.AuctionBought", b =>
+                {
+                    b.HasOne("AuctionDotNet.Data.Model.AppUser", null)
+                        .WithMany("AuctionsBought")
+                        .HasForeignKey("AppUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

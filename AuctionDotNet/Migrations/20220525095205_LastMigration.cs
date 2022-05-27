@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AuctionDotNet.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class LastMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -155,18 +155,38 @@ namespace AuctionDotNet.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AuctionBids",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AuctionId = table.Column<int>(nullable: false),
+                    AppUserId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuctionBids", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AuctionBids_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Auctions",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    BidStart = table.Column<int>(nullable: false),
-                    TimeLeft = table.Column<int>(nullable: false),
-                    BuyPrice = table.Column<int>(nullable: false),
+                    BidStartPrice = table.Column<int>(nullable: false),
+                    BidDuration = table.Column<int>(nullable: false),
+                    BidBuyingPrice = table.Column<int>(nullable: false),
                     Active = table.Column<bool>(nullable: false),
-                    LastBidId = table.Column<int>(nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
                     AppUserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -178,9 +198,23 @@ namespace AuctionDotNet.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AuctionsBought",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AuctionId = table.Column<int>(nullable: false),
+                    AppUserId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuctionsBought", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Auctions_AspNetUsers_LastBidId",
-                        column: x => x.LastBidId,
+                        name: "FK_AuctionsBought_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -226,14 +260,19 @@ namespace AuctionDotNet.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AuctionBids_AppUserId",
+                table: "AuctionBids",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Auctions_AppUserId",
                 table: "Auctions",
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Auctions_LastBidId",
-                table: "Auctions",
-                column: "LastBidId");
+                name: "IX_AuctionsBought_AppUserId",
+                table: "AuctionsBought",
+                column: "AppUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -254,7 +293,13 @@ namespace AuctionDotNet.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "AuctionBids");
+
+            migrationBuilder.DropTable(
                 name: "Auctions");
+
+            migrationBuilder.DropTable(
+                name: "AuctionsBought");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

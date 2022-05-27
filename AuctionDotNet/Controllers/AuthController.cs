@@ -46,7 +46,9 @@ namespace AuctionDotNet.Controllers
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username
+                UserName = model.Username,
+                AuctionsBought = null,
+                AuctionBids = null,
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);

@@ -18,5 +18,7 @@ namespace AuctionDotNet.Data
             base.OnModelCreating(builder);
         }
         public DbSet<Auction> Auctions { get; set; }
+        public DbSet<AuctionBid> AuctionBids { get; set; }
+        public DbSet<AuctionBought> AuctionsBought { get; set; }
     }
 }
